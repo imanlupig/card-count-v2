@@ -1,6 +1,6 @@
 export default function DeckSelector({ value, onChange }) {
   return (
-    <div>
+    <div className="field">
       <label htmlFor="decks" className="label">Number of decks</label>
       <select
         id="decks"
@@ -12,6 +12,7 @@ export default function DeckSelector({ value, onChange }) {
           <option key={n} value={n}>{n} {n === 1 ? "deck" : "decks"}</option>
         ))}
       </select>
+      <small className="helper">&nbsp;</small>
     </div>
   );
 }

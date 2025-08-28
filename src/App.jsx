@@ -28,7 +28,7 @@ export default function App() {
       <section className="table-card" style={{ marginBottom: 12 }}>
         <div className="controls">
           <DeckSelector value={numDecks} onChange={setNumDecks} />
-          <div>
+          <div className="field">
             <label htmlFor="interval" className="label">Auto-deal interval (ms)</label>
             <input
               id="interval"
@@ -47,7 +47,7 @@ export default function App() {
                 if (!intervalMs || intervalMs < MIN_INTERVAL_MS) setIntervalMs(MIN_INTERVAL_MS);
               }}
             />
-            <small className="muted">Minimum {MIN_INTERVAL_MS}ms</small>
+            <small className="helper">Minimum {MIN_INTERVAL_MS}ms</small>
           </div>
         </div>
 
