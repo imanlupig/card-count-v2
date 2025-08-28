@@ -22,57 +22,50 @@ export default function App() {
   const [showCounts, setShowCounts] = useState(true);
 
   return (
-    <div style={{ maxWidth: 720, margin: "0 auto", padding: 16, fontFamily: "system-ui, sans-serif" }}>
-      <h1>Blackjack Hi-Lo Trainer</h1>
+    <div className="app">
+      <h1 className="title">Blackjack Hi‑Lo Trainer</h1>
 
-      <section style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, alignItems: "end" }}>
-        <DeckSelector value={numDecks} onChange={setNumDecks} />
-        <div>
-          <label htmlFor="interval" style={{ display: "block", fontWeight: 600 }}>Auto-deal interval (ms)</label>
-          <input
-            id="interval"
-            type="number"
-            min={MIN_INTERVAL_MS}
-            step={50}
-            value={intervalMs}
-            onChange={(e) => {
-              const val = e.target.value;
+      <section className="table-card" style={{ marginBottom: 12 }}>
+        <div className="controls">
+          <DeckSelector value={numDecks} onChange={setNumDecks} />
+          <div>
+            <label htmlFor="interval" className="label">Auto-deal interval (ms)</label>
+            <input
+              id="interval"
+              className="input"
+              type="number"
+              min={MIN_INTERVAL_MS}
+              step={50}
+              value={intervalMs}
+              onChange={(e) => {
+                const val = e.target.value;
+                if (val === "") { setIntervalMs(""); return; }
+                const num = Number(val);
+                if (!isNaN(num)) setIntervalMs(num);
+              }}
+              onBlur={() => {
+                if (!intervalMs || intervalMs < MIN_INTERVAL_MS) setIntervalMs(MIN_INTERVAL_MS);
+              }}
+            />
+            <small className="muted">Minimum {MIN_INTERVAL_MS}ms</small>
+          </div>
+        </div>
 
-              // Allow empty value temporarily while typing
-              if (val === "") {
-                setIntervalMs("");
-                return;
-              }
-
-              // Only set when it's a valid number
-              const num = Number(val);
-              if (!isNaN(num)) setIntervalMs(num);
-            }}
-            onBlur={() => {
-              // On blur, reset to minimum if empty or below min
-              if (!intervalMs || intervalMs < MIN_INTERVAL_MS) {
-                setIntervalMs(MIN_INTERVAL_MS);
-              }
-            }}
-            style={{ width: "100%", padding: 8 }}
-          />
-          <small>Minimum {MIN_INTERVAL_MS}ms</small>
+        <div className="btn-row" style={{ marginTop: 12 }}>
+          <button onClick={startDrill} className="btn btn-primary">Start Drill</button>
+          <button onClick={dealOne} className="btn btn-secondary" disabled={totalCards === 0 || deckEnded}>Next Card</button>
+          <button onClick={toggleAuto} className="btn" disabled={totalCards === 0 || deckEnded}>
+            {autoDealing ? "Stop Auto Deal" : "Start Auto Deal"}
+          </button>
+          <button onClick={() => setShowCounts((s) => !s)} className="btn">
+            {showCounts ? "Hide Count" : "Show Count"}
+          </button>
         </div>
       </section>
 
-      <section style={{ display: "flex", gap: 8, marginTop: 12, flexWrap: "wrap" }}>
-        <button onClick={startDrill} style={btnStyle}>Start Drill</button>
-        <button onClick={dealOne} style={btnStyle} disabled={totalCards === 0 || deckEnded}>Next Card</button>
-        <button onClick={toggleAuto} style={btnStyle} disabled={totalCards === 0 || deckEnded}>
-          {autoDealing ? "Stop Auto Deal" : "Start Auto Deal"}
-        </button>
-        <button onClick={() => setShowCounts((s) => !s)} style={btnStyle}>
-          {showCounts ? "Hide Count" : "Show Count"}
-        </button>
-      </section>
+      <HiLoInstructions />
 
-        <HiLoInstructions />
-      <section style={{ marginTop: 16 }}>
+      <section className="panel" style={{ marginTop: 16 }}>
         <CardDisplay card={currentCard} total={totalCards} index={dealtIndex} />
       </section>
 
@@ -86,16 +79,13 @@ export default function App() {
         />
       </section>
 
-      {deckEnded && <p style={{ marginTop: 12 }}><strong>Drill complete.</strong> Start a new drill to reshuffle.</p>}
+      {deckEnded && (
+        <p style={{ marginTop: 12 }}>
+          <strong>Drill complete.</strong> Start a new drill to reshuffle.
+        </p>
+      )}
     </div>
   );
 }
 
-const btnStyle = {
-  padding: "8px 12px",
-  borderRadius: 8,
-  border: "1px solid #ccc",
-  background: "#f8f8f8",
-  cursor: "pointer",
-  color: 'black'
-};
+const btnStyle = {};

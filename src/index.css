@@ -1,68 +1,154 @@
 :root {
+  --felt-green: #0d5c42;
+  --felt-green-dark: #0a4230;
+  --felt-highlight: #137457;
+  --gold: #e3c565;
+  --gold-dark: #b79f4b;
+  --chip-red: #c0392b;
+  --panel: rgba(0, 0, 0, 0.35);
+  --panel-border: rgba(255, 255, 255, 0.15);
+  --text: #f6f6f6;
+  --text-muted: #d5d5d5;
+  --card-bg: #ffffff;
+  --card-border: #1f1f1f;
+  --shadow: 0 10px 30px rgba(0,0,0,0.35);
+
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
+  color: var(--text);
+  background: radial-gradient(circle at 30% 10%, var(--felt-highlight), var(--felt-green) 40%, var(--felt-green-dark) 100%);
+  background-attachment: fixed;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
+#root {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 32px 16px 48px;
+}
+
+.app {
+  width: 100%;
+  max-width: 920px;
+}
+
+/* Header */
+.title {
+  margin: 0 0 16px;
+  font-size: 2.2rem;
   line-height: 1.1;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.35);
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+/* Table-like background card */
+.table-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+/* Controls grid */
+.controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: end;
+}
+
+.btn-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.label { font-weight: 600; display: block; margin-bottom: 6px; }
+.input, .select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--panel-border);
+  background: rgba(0,0,0,0.2);
+  color: var(--text);
+}
+
+/* Buttons */
+.btn {
+  border-radius: 10px;
+  border: 1px solid var(--panel-border);
+  padding: 10px 14px;
+  font-weight: 600;
+  color: var(--text);
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.15));
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: transform 0.05s ease, filter 0.15s ease, border-color 0.2s;
 }
-button:hover {
-  border-color: #646cff;
+.btn:hover { filter: brightness(1.1); }
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-primary {
+  background: linear-gradient(180deg, var(--gold), var(--gold-dark));
+  color: #1b1b1b;
+  border-color: rgba(0,0,0,0.25);
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.btn-secondary {
+  background: linear-gradient(180deg, #2d9f75, #1e7c59);
+  border-color: rgba(0,0,0,0.25);
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* Panels */
+.panel {
+  border-radius: 14px;
+  border: 1px solid var(--panel-border);
+  background: var(--panel);
+  padding: 14px 16px;
+  box-shadow: var(--shadow);
 }
+
+.panel-muted {
+  border-style: dashed;
+  opacity: 0.9;
+}
+
+.panel-heading { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+.muted { color: var(--text-muted); }
+
+/* Card Display */
+.card-row { display: flex; align-items: center; gap: 14px; }
+.playing-card {
+  width: 110px;
+  height: 154px;
+  border-radius: 12px;
+  background: var(--card-bg);
+  color: #111;
+  border: 2px solid var(--card-border);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  font-weight: 700;
+}
+.playing-card.red { color: #c1272d; }
+.playing-card.black { color: #111; }
+
+.meta { font-size: 14px; }
+
+/* List styling for tips */
+.tips-list { margin: 8px 0 8px 18px; padding: 0; line-height: 1.6; }
