@@ -3,6 +3,7 @@ import useHiLoTrainer from "./hooks/useHiLoTrainer";
 import DeckSelector from "./components/DeckSelector.jsx";
 import CardDisplay from "./components/CardDisplay.jsx";
 import CountTracker from "./components/CountTracker.jsx";
+import HiLoInstructions from "./components/HiLoInstructions.jsx";
 
 const MIN_INTERVAL_MS = 100;
 
@@ -34,7 +35,25 @@ export default function App() {
             min={MIN_INTERVAL_MS}
             step={50}
             value={intervalMs}
-            onChange={(e) => setIntervalMs(Math.max(MIN_INTERVAL_MS, Number(e.target.value) || MIN_INTERVAL_MS))}
+            onChange={(e) => {
+              const val = e.target.value;
+
+              // Allow empty value temporarily while typing
+              if (val === "") {
+                setIntervalMs("");
+                return;
+              }
+
+              // Only set when it's a valid number
+              const num = Number(val);
+              if (!isNaN(num)) setIntervalMs(num);
+            }}
+            onBlur={() => {
+              // On blur, reset to minimum if empty or below min
+              if (!intervalMs || intervalMs < MIN_INTERVAL_MS) {
+                setIntervalMs(MIN_INTERVAL_MS);
+              }
+            }}
             style={{ width: "100%", padding: 8 }}
           />
           <small>Minimum {MIN_INTERVAL_MS}ms</small>
@@ -52,6 +71,7 @@ export default function App() {
         </button>
       </section>
 
+        <HiLoInstructions />
       <section style={{ marginTop: 16 }}>
         <CardDisplay card={currentCard} total={totalCards} index={dealtIndex} />
       </section>
